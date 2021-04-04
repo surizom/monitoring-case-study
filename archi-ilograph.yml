@@ -1,0 +1,191 @@
+resources:
+- name: Applications
+  subtitle: Production de logs
+  color: Gray
+  style: plural
+  icon: 
+    path: AWS/_General/Traditional-server.svg
+  children: 
+  - name: Application A
+    subtitle: Production de logs
+    color: Gray
+    style: plural
+    icon: 
+     path: AWS/_General/Traditional-server.svg
+  - name: Application B
+    subtitle: Production de logs
+    color: Gray
+    style: plural
+    icon: 
+     path: AWS/_General/Traditional-server.svg
+  
+- name: Environnement AWS
+  subtitle: Environment 
+  color: navy
+  children:
+  - name: Kafka managé
+    subtitle: Prétraitement et buffering
+    children: 
+    - name: Stream processor logs A
+      subtitle: Uniformisation des logs provenant de l'application A
+      icon: 
+        path: AWS/Analytics/Managed-Streaming-for-Kafka.svg
+      
+    - name: Stream processor logs B
+      subtitle: Uniformisation des logs provenant de l'application B
+      color: Firebrick
+      icon: 
+        path: AWS/Analytics/Managed-Streaming-for-Kafka.svg
+      
+    - name: Bus Kafka
+      subtitle: Database
+      color: Purple
+      description: Bus kafka
+      icon: 
+        path: AWS/Analytics/Managed-Streaming-for-Kafka.svg
+  - name: Surveillance temps réel
+    subtitle: applications temps réel
+    children:
+    - name: Stockage temporaire chaud
+      subtitle: données des dernières 24h
+      color: Firebrick
+      icon: 
+        path: AWS/Analytics/Elasticsearch-Service.svg
+    - name: Instance de visualisation
+      subtitle: génération de dashboards et d'indicateurs
+      color: Firebrick
+      icon: 
+        path: AWS/Compute/EC2.svg
+  - name: Cold storage
+    subtitle: stockage long terme
+    children:
+    - name: Stockage froid
+      subtitle: données conservées indéfiniment
+      color: DarkBlue
+      icon: 
+        path: AWS/Storage/S3-Glacier.svg
+    - name: Moteur de requête
+      subtitle: requêtage sur stockage droid
+      color: DarkBlue
+      icon: 
+        path: AWS/Analytics/Athena.svg
+    - name: Aggrégation et indexation
+      children: 
+      - name: Clusters de calcul distributé
+        color: RoyalBlue
+        style: plural
+        subtitle: un cluster par application
+        icon:
+          path: AWS/Analytics/EMR_Cluster.svg
+    - name: Stockage froid aggrégé & indéxé
+      children: 
+      - name: Stockage froid indéxé
+        color: BlueViolet
+        icon: 
+          path: AWS/Analytics/Elasticsearch-Service.svg
+- name: Utilisateurs
+  color: Gray
+  style: plural
+  icon:
+    path: AWS/_General/Users.svg
+- name: Machine Learning & Statistiques
+  color: Plum
+  style: plural
+  icon:
+    path: AWS/ML/Machine-Learning.svg
+    
+    
+- name: Webservices
+  color: SandyBrown
+  icon:
+    path: AWS/_General/Traditional-server.svg
+  
+perspectives:
+- name: Dependency
+  relations:
+  - from: Application A
+    to: Stream processor logs A
+    label: Logs appli A
+    
+  - from: Application B
+    to: Stream processor logs B
+    label: Logs appli B
+  
+  - from: Stream processor logs A
+    to: Bus Kafka
+    label: Logs JSON standardisés
+    
+  - from: Stream processor logs B
+    to: Bus Kafka
+    label: Logs JSON standardisés
+    description: Labels can be given extended descriptions, like this
+  
+  - from: Bus Kafka
+    to: Stockage temporaire chaud
+    label: Logs JSON standardisés
+    description: Labels can be given extended descriptions, like this
+    
+  - from: Stockage temporaire chaud
+    to: Instance de visualisation
+    arrowDirection: backward
+    label: Lecture
+    description: Labels can be given extended descriptions, like this
+    
+  - from: Instance de visualisation
+    to: Webservices
+    arrowDirection: backward
+    label: Requêtes
+    description: Labels can be given extended descriptions, like this
+    
+  - from: Bus Kafka
+    to: Stockage froid
+    label: Logs JSON standardisés
+    description: Labels can be given extended descriptions, like this
+    
+  - from: Stockage froid
+    to: Moteur de requête
+    label: Requêtes
+    arrowDirection: backward
+    description: Labels can be given extended descriptions, like this
+    
+  - from: Moteur de requête
+    to: Utilisateurs
+    label: Requêtes
+    arrowDirection: backward
+    description: Labels can be given extended descriptions, like this
+    
+  - from: Instance de visualisation
+    to: Utilisateurs
+    label: Surveillance
+    arrowDirection: backward
+    description: Labels can be given extended descriptions, like this
+    
+  - from: Stockage froid
+    to: Clusters de calcul distributé
+    label: Lecture
+    description: Labels can be given extended descriptions, like this
+    arrowDirection: backward
+    
+  - from: Clusters de calcul distributé
+    to: Stockage froid indéxé
+    label: Ecriture
+    description: Labels can be given extended descriptions, like this
+    
+  - from: Stockage froid indéxé
+    to: Machine Learning & Statistiques
+    label: Requêtes
+    arrowDirection: backward
+    description: Labels can be given extended descriptions, like this
+    
+  notes: |-
+    Welcome to your Ilograph diagram.
+
+    Your diagram comes pre-populated with resources and a sample perspective.
+
+    **Need Help**? Read [Creating your first Ilograph diagram in 5 minutes](https://www.ilograph.com/docs/editing/tutorial/#making-some-simple-changes). Additional resources are available on the [Ilograph Docs](https://www.ilograph.com/docs/editing/).
+    
+    **Example Diagrams**
+    [AWS Diagram (Relation)](https://app.ilograph.com/demo.ilograph.Ilograph/Request)
+    [AWS Diagram (Sequence)](https://app.ilograph.com/demo.ilograph.Ilograph/Get%2520Diagram)
+    [Azure Diagram](https://app.ilograph.com/demo.ilograph.RideShare%2520on%2520Azure/Resource%2520Dependency)
+
